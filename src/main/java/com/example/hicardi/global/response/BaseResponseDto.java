@@ -28,6 +28,13 @@ public class BaseResponseDto<T> {
         this.result = result;
     }
 
+    public BaseResponseDto(int code, Boolean isSuccess, String message, T result) {
+        this.code = code;
+        this.isSuccess = isSuccess;
+        this.message = message;
+        this.result = result;
+    }
+
     // 요청에 실패한 경우
     public BaseResponseDto(ErrorMessage errorMessage) {
         this.code = errorMessage.getCode();
