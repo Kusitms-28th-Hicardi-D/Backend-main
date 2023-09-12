@@ -27,7 +27,7 @@ public class IntroController {
     private IntroService introService;
 
     // Intro 생성 및 IntroInfo 목록 생성 API
-    @PostMapping("/create")
+    @PostMapping("")
     @ApiOperation(value = "Intro 생성 및 IntroInfo 목록 생성 API", response= Intro.class)
     public ResponseEntity<BaseResponseDto<IntroResponse>> createIntro(@RequestBody IntroRequest introRequest) {
         BaseResponseDto<IntroResponse> response = introService.createIntro(introRequest);
