@@ -22,16 +22,16 @@ public class IntroInfo extends BaseEntity {
     private String linkDesc;
 
     @Column(nullable = false)
-    private String link;
+    private String linkUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "intro_id")
     private Intro intro;
 
-    public static IntroInfo createIntroInfo(String linkDesc, String link, Intro intro) {
+    public static IntroInfo createIntroInfo(String linkDesc, String linkUrl, Intro intro) {
         return IntroInfo.builder()
                 .linkDesc(linkDesc)
-                .link(link)
+                .linkUrl(linkUrl)
                 .intro(intro)
                 .build();
     }
