@@ -3,6 +3,7 @@ package com.example.hicardi.domain.intro.service;
 import com.example.hicardi.domain.intro.dto.*;
 import com.example.hicardi.domain.intro.entity.Intro;
 import com.example.hicardi.domain.intro.entity.IntroInfo;
+import com.example.hicardi.domain.intro.entity.IntroVideo;
 import com.example.hicardi.domain.intro.exception.IntroNotFoundException;
 import com.example.hicardi.domain.intro.repository.IntroInfoRepository;
 import com.example.hicardi.domain.intro.repository.IntroRepository;
@@ -27,7 +28,7 @@ public class IntroService {
     private final IntroVideoRepository introVideoRepository;
 
     @Transactional
-    public BaseResponseDto<IntroResponse> createIntro(IntroRequest introRequest) {
+    public BaseResponseDto<IntroPostResponse> createIntro(IntroRequest introRequest) {
         // Intro 생성
         Intro intro = Intro.createIntro(introRequest.getName());
         introRepository.save(intro);
@@ -40,13 +41,20 @@ public class IntroService {
         }
         introInfoRepository.saveAll(introInfoList);
 
+        // IntroVideo 생성
+        List<IntroVideo> introVideoList = new ArrayList<>();
+        for (IntroVideoRequest videoRequest : introRequest.getIntroVideoList()) {
+            introVideoList.add(IntroVideo.createIntroVideo(videoRequest.getVideoUrl(), videoRequest.getVideoDesc(), intro));
+        }
+        introVideoRepository.saveAll(introVideoList);
+
         // Response 생성
-        IntroResponse introResponse = new IntroResponse(introId);
-        BaseResponseDto<IntroResponse> response = new BaseResponseDto<IntroResponse>(
+        IntroPostResponse introPostResponse = new IntroPostResponse(introId);
+        BaseResponseDto<IntroPostResponse> response = new BaseResponseDto<IntroPostResponse>(
                 HttpStatus.CREATED.value(),
                 true,
-                "Intro 생성 및 IntroInfo 목록 생성 API",
-                introResponse
+                "Intro 생성(제품 추가) API",
+                introPostResponse
         );
 
         return response;

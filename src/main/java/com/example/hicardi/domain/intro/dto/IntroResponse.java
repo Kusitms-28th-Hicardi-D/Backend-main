@@ -1,6 +1,7 @@
 package com.example.hicardi.domain.intro.dto;
 
 import com.example.hicardi.domain.intro.entity.IntroInfo;
+import com.example.hicardi.domain.intro.entity.IntroVideo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ public class IntroResponse {
     private Long introId;
     private String name;
     private List<IntroInfo> introInfoList;
+    private List<IntroVideo> introVideoList;
 
     public IntroResponse(Long introId) {
         this.introId = introId;

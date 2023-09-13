@@ -9,4 +9,5 @@ import java.util.List;
 public class IntroRequest {
     private String name;
     private List<IntroInfoRequest> introInfoList;
+    private List<IntroVideoRequest> introVideoList;
 }
