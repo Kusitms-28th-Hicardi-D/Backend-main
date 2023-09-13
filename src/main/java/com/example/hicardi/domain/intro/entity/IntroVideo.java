@@ -19,15 +19,19 @@ public class IntroVideo extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String link;
+    private String videoUrl;
+
+    @Column(nullable = false)
+    private String videoDesc;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "intro_id")
     private Intro intro;
 
-    public static IntroVideo createIntroVideo(String link, Intro intro) {
+    public static IntroVideo createIntroVideo(String videoUrl, String videoDesc, Intro intro) {
         return IntroVideo.builder()
-                .link(link)
+                .videoUrl(videoUrl)
+                .videoDesc(videoDesc)
                 .intro(intro)
                 .build();
     }
