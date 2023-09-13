@@ -25,8 +25,8 @@ public class IntroController {
     // Intro 생성 및 IntroInfo 목록 생성 API
     @PostMapping("")
     @ApiOperation(value = "Intro 생성 API", response= Intro.class)
-    public ResponseEntity<BaseResponseDto<IntroPostResponse>> createIntro(@RequestBody IntroRequest introRequest) {
-        BaseResponseDto<IntroPostResponse> response = introService.createIntro(introRequest);
+    public ResponseEntity<BaseResponseDto<IntroResponse>> createIntro(@RequestBody IntroRequest introRequest) {
+        BaseResponseDto<IntroResponse> response = introService.createIntro(introRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

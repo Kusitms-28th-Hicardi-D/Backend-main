@@ -28,7 +28,7 @@ public class IntroService {
     private final IntroVideoRepository introVideoRepository;
 
     @Transactional
-    public BaseResponseDto<IntroPostResponse> createIntro(IntroRequest introRequest) {
+    public BaseResponseDto<IntroResponse> createIntro(IntroRequest introRequest) {
         // Intro 생성
         Intro intro = Intro.createIntro(introRequest.getName());
         introRepository.save(intro);
@@ -49,8 +49,8 @@ public class IntroService {
         introVideoRepository.saveAll(introVideoList);
 
         // Response 생성
-        IntroPostResponse introPostResponse = new IntroPostResponse(introId);
-        BaseResponseDto<IntroPostResponse> response = new BaseResponseDto<IntroPostResponse>(
+        IntroResponse introPostResponse = new IntroResponse(introId);
+        BaseResponseDto<IntroResponse> response = new BaseResponseDto<IntroResponse>(
                 HttpStatus.CREATED.value(),
                 true,
                 "Intro 생성(제품 추가) API",
