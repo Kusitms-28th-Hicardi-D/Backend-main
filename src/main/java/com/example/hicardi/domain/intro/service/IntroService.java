@@ -1,14 +1,14 @@
 package com.example.hicardi.domain.intro.service;
 
-import com.example.hicardi.domain.intro.dto.IntroInfoRequest;
-import com.example.hicardi.domain.intro.dto.IntroRequest;
-import com.example.hicardi.domain.intro.dto.IntroResponse;
+import com.example.hicardi.domain.intro.dto.*;
 import com.example.hicardi.domain.intro.entity.Intro;
 import com.example.hicardi.domain.intro.entity.IntroInfo;
+import com.example.hicardi.domain.intro.exception.IntroNotFoundException;
 import com.example.hicardi.domain.intro.repository.IntroInfoRepository;
 import com.example.hicardi.domain.intro.repository.IntroRepository;
 import com.example.hicardi.domain.intro.repository.IntroVideoRepository;
 import com.example.hicardi.global.response.BaseResponseDto;
+import com.example.hicardi.global.response.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -49,6 +50,37 @@ public class IntroService {
         );
 
         return response;
+    }
+
+    @Transactional
+    public BaseResponseDto<IntroInfoListDto> getIntroByName(String name) {
+        Intro intro = introRepository.findByName(name);
+
+        if (intro != null) {
+            List<IntroInfo> introInfoList = introInfoRepository.findByIntro(intro);
+            List<IntroInfoDto> introInfoDtoList = introInfoList.stream()
+                    .map(introInfo -> new IntroInfoDto(introInfo.getLinkDesc(), introInfo.getLinkUrl()))
+                    .collect(Collectors.toList());
+
+            // IntroResponse 객체 생성
+            IntroInfoListDto introInfoListDto= new IntroInfoListDto(intro.getId(), intro.getName(), introInfoDtoList);
+
+            BaseResponseDto<IntroInfoListDto> response = new BaseResponseDto<IntroInfoListDto>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "Intro 생성 및 IntroInfo 목록 생성 API",
+                    introInfoListDto
+            );
+
+            return response;
+
+        }
+        else{
+            BaseResponseDto<IntroInfoListDto> response = new BaseResponseDto<IntroInfoListDto>(
+                    ErrorMessage.INTRO_NOT_FOUND
+            );
+            return response;
+        }
     }
 
     public void createIntro(String name) {

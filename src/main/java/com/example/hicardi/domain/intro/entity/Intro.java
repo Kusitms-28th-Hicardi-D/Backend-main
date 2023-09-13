@@ -1,6 +1,7 @@
 package com.example.hicardi.domain.intro.entity;
 
 import com.example.hicardi.domain.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -23,6 +24,7 @@ public class Intro extends BaseEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "intro")
     @Builder.Default
     private List<IntroInfo> infoList = new ArrayList<>();
