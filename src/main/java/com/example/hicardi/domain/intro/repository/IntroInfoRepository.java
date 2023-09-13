@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface IntroInfoRepository extends JpaRepository<IntroInfo, Long> {
-    //List<IntroInfo> findByIntro(Intro intro);
     List<IntroInfo> findByIntro(Intro intro);
 }

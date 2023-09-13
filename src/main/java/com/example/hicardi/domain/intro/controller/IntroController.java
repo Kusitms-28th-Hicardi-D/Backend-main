@@ -1,7 +1,6 @@
 package com.example.hicardi.domain.intro.controller;
 
-import com.example.hicardi.domain.intro.dto.IntroInfoListDto;
-import com.example.hicardi.domain.intro.dto.IntroPostResponse;
+import com.example.hicardi.domain.intro.dto.IntroListDto;
 import com.example.hicardi.domain.intro.dto.IntroRequest;
 import com.example.hicardi.domain.intro.dto.IntroResponse;
 import com.example.hicardi.domain.intro.entity.Intro;
@@ -33,8 +32,8 @@ public class IntroController {
     // IntroInfo 조회 API
     @GetMapping("/{name}")
     @ApiOperation(value = "Intro 조회 API", response = BaseResponseDto.class)
-    public ResponseEntity<BaseResponseDto<IntroInfoListDto>> getIntroByName(@PathVariable String name) {
-        BaseResponseDto<IntroInfoListDto> response = introService.getIntroByName(name);
+    public ResponseEntity<BaseResponseDto<IntroListDto>> getIntroByName(@PathVariable String name) {
+        BaseResponseDto<IntroListDto> response = introService.getIntroByName(name);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

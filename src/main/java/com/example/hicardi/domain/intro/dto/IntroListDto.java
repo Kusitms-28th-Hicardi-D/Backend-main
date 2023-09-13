@@ -1,6 +1,5 @@
 package com.example.hicardi.domain.intro.dto;
 
-import com.example.hicardi.domain.intro.entity.IntroInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,14 +7,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class IntroInfoListDto {
+public class IntroListDto {
     private Long introId;
     private String name;
     private List<IntroInfoDto> introInfoList;
+    private List<IntroVideoDto> introVideoList;
 
-    public IntroInfoListDto(Long introId, String name, List<IntroInfoDto> introInfoList) {
+    public IntroListDto(Long introId, String name, List<IntroInfoDto> introInfoList, List<IntroVideoDto> introVideoList) {
         this.introId = introId;
         this.name = name;
         this.introInfoList = introInfoList;
+        this.introVideoList = introVideoList;
     }
 }

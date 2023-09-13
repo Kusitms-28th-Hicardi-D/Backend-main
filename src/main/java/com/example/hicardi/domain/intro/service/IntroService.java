@@ -4,7 +4,6 @@ import com.example.hicardi.domain.intro.dto.*;
 import com.example.hicardi.domain.intro.entity.Intro;
 import com.example.hicardi.domain.intro.entity.IntroInfo;
 import com.example.hicardi.domain.intro.entity.IntroVideo;
-import com.example.hicardi.domain.intro.exception.IntroNotFoundException;
 import com.example.hicardi.domain.intro.repository.IntroInfoRepository;
 import com.example.hicardi.domain.intro.repository.IntroRepository;
 import com.example.hicardi.domain.intro.repository.IntroVideoRepository;
@@ -61,7 +60,7 @@ public class IntroService {
     }
 
     @Transactional
-    public BaseResponseDto<IntroInfoListDto> getIntroByName(String name) {
+    public BaseResponseDto<IntroListDto> getIntroByName(String name) {
         Intro intro = introRepository.findByName(name);
 
         if (intro != null) {
@@ -70,10 +69,15 @@ public class IntroService {
                     .map(introInfo -> new IntroInfoDto(introInfo.getLinkDesc(), introInfo.getLinkUrl()))
                     .collect(Collectors.toList());
 
-            // IntroResponse 객체 생성
-            IntroInfoListDto introInfoListDto= new IntroInfoListDto(intro.getId(), intro.getName(), introInfoDtoList);
+            List<IntroVideo> introVideoList = introVideoRepository.findByIntro(intro);
+            List<IntroVideoDto> introVideoDtoList = introVideoList.stream()
+                    .map(introVideo -> new IntroVideoDto(introVideo.getVideoUrl(), introVideo.getVideoDesc()))
+                    .collect(Collectors.toList());
 
-            BaseResponseDto<IntroInfoListDto> response = new BaseResponseDto<IntroInfoListDto>(
+            // IntroResponse 객체 생성
+            IntroListDto introInfoListDto= new IntroListDto(intro.getId(), intro.getName(), introInfoDtoList, introVideoDtoList);
+
+            BaseResponseDto<IntroListDto> response = new BaseResponseDto<IntroListDto>(
                     HttpStatus.OK.value(),
                     true,
                     "Intro 생성 및 IntroInfo 목록 생성 API",
@@ -84,7 +88,7 @@ public class IntroService {
 
         }
         else{
-            BaseResponseDto<IntroInfoListDto> response = new BaseResponseDto<IntroInfoListDto>(
+            BaseResponseDto<IntroListDto> response = new BaseResponseDto<IntroListDto>(
                     ErrorMessage.INTRO_NOT_FOUND
             );
             return response;
