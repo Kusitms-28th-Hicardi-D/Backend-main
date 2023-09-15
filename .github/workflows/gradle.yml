@@ -84,7 +84,7 @@ jobs:
             key: ${{ secrets.SSH_PRIVATE_KEY }}
             envs: GITHUB_SHA
             script: |
-                sudo docker rm -f $(docker ps -qa)
+                sudo docker rm main-service
                 sudo docker pull minchogt/hicardi
                 docker-compose up -d main-service
                 docker image prune -f
