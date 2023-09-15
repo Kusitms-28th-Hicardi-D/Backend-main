@@ -21,7 +21,7 @@ public class Solution extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String video_link;
+    private String name;
 
     @OneToMany(mappedBy = "solution")
     @Builder.Default
@@ -31,9 +31,9 @@ public class Solution extends BaseEntity {
     @Builder.Default
     private List<SolutionTest> tests = new ArrayList<>();
 
-    public static Solution createSolution(String video_link){
+    public static Solution createSolution(String name){
         return Solution.builder()
-                .video_link(video_link)
+                .name(name)
                 .build();
     }
 

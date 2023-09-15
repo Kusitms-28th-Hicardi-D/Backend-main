@@ -30,8 +30,8 @@ public class S3Service {
     @Value("${cloud.aws.s3.uploadPath}")
     private String uploadPath;
 
-    public boolean uploadPdf(MultipartFile file) {
-        String key = UUID.randomUUID() + "_" + file.getOriginalFilename();
+    public String uploadPdf(MultipartFile file, String fileType) {
+        String key = fileType + "/" + UUID.randomUUID() + "_" + file.getOriginalFilename();
 
         try {
             ObjectMetadata metadata = new ObjectMetadata();
@@ -39,7 +39,7 @@ public class S3Service {
             PutObjectRequest request = new PutObjectRequest(bucketName, key, file.getInputStream(), metadata);
             s3Client.putObject(request);
 
-            return true;
+            return key;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -19,23 +19,29 @@ public class SolutionTest extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column(nullable = false)
     private String category;
 
     @Column(nullable = false)
-    private String fileName;
+    private String image;
+
+    @Column(nullable = false)
+    private String fileKey;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "solution_id")
     private Solution solution;
 
-    public static SolutionTest createSolutionTestWithSolution(String name, String category, String fileName, Solution solution){
+    public static SolutionTest createSolutionTestWithSolution(
+            String title, String category, String image, String fileName, Solution solution
+    ){
         SolutionTest solutionTest = SolutionTest.builder()
-                .name(name)
+                .title(title)
                 .category(category)
-                .fileName(fileName)
+                .image(image)
+                .fileKey(fileName)
                 .solution(solution)
                 .build();
         solution.addTest(solutionTest);
