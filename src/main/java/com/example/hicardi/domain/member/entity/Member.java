@@ -33,10 +33,6 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String contact;
 
-    @OneToMany(mappedBy = "member")
-    @Builder.Default
-    private List<Review> reviews = new ArrayList<>();
-
     public static Member createMember(String username, String password, String email, String contact){
         return Member.builder()
                 .username(username)

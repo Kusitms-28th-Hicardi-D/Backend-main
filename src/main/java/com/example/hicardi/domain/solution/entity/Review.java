@@ -20,10 +20,6 @@ public class Review extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "solution_id")
     private Solution solution;
 
@@ -33,9 +29,8 @@ public class Review extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
-    public static Review createReviewWithSolution(Member member, Solution solution, String writer, String content){
+    public static Review createReviewWithSolution(Solution solution, String writer, String content){
         Review review = Review.builder()
-                .member(member)
                 .solution(solution)
                 .writer(writer)
                 .content(content)
