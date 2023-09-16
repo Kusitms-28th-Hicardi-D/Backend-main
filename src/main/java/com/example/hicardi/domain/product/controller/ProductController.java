@@ -61,6 +61,14 @@ public class ProductController {
         return new BaseResponseDto<>(s3Service.uploadImage(file, "product_image"));
     }
 
+    //동영상 등록
+    @PostMapping("/video")
+    public BaseResponseDto<?> uploadVideo(
+            @RequestPart MultipartFile file
+    ){
+        return new BaseResponseDto<>(s3Service.uploadVideo(file, "product_video"));
+    }
+
     /*
     //이미지 여러개 등록
     @PostMapping("/images")
