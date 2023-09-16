@@ -63,4 +63,42 @@ public class ProductService {
         return response;
     }
 
+    public BaseResponseDto<AllProductResponse> getProductList(String category) {
+        List<Product> productList;
+
+        if ("all".equals(category)) {
+            productList = productRepository.findAll();
+        } else {
+            productList = productRepository.findByCategory(category);
+        }
+
+        List<ProductDto> productDtoList = new ArrayList<>();
+
+        for (Product product : productList) {
+            ProductDto productDto = new ProductDto();
+            productDto.setProductId(product.getId());
+            productDto.setTitle(product.getTitle());
+            productDto.setContent(product.getContent());
+            productDto.setPrice(product.getPrice());
+
+            // 대표 이미지 설정 (이미지 URL을 가져오는 로직이 필요)
+            //productDto.setImageUrl(productImageRepository.findBy(product));
+            List<ProductImage> imageUrl = productImageRepository.findByProduct(product);
+            if(imageUrl.size() > 0)
+                productDto.setImageUrl(imageUrl.get(0).getImageUrl());
+
+            productDtoList.add(productDto);
+        }
+
+        // Response 생성
+        AllProductResponse allProductResponse = new AllProductResponse(productDtoList);
+        BaseResponseDto<AllProductResponse> response = new BaseResponseDto<AllProductResponse>(
+                HttpStatus.CREATED.value(),
+                true,
+                "Product 생성 API",
+                allProductResponse
+        );
+
+        return response;
+    }
 }
