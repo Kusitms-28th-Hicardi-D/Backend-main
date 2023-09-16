@@ -107,4 +107,21 @@ public class S3Service {
     public String getFileNameFromResourceUrl(String fileUrl) {
         return fileUrl.replace(uploadPath + "/", "");
     }
+
+    public String uploadVideo(MultipartFile multipartFile, String videoType) {
+        validateMultipartFile(multipartFile);
+
+        String savedFileName = getSavedFileName(multipartFile, videoType);
+
+        // MIME 타입 설정
+        ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(multipartFile.getContentType());
+
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            s3Client.putObject(bucketName, savedFileName, inputStream, metadata);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return getResourceUrl(savedFileName);
+    }
 }

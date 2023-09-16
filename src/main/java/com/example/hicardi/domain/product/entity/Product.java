@@ -26,13 +26,11 @@ public class Product {
     @Column(nullable = false, unique = true)
     private String title;
 
-    @Column(nullable = false)
     private String engName;
 
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     private int price;
 
     @JsonIgnore
