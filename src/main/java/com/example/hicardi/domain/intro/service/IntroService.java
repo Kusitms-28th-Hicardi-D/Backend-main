@@ -71,7 +71,7 @@ public class IntroService {
 
             List<IntroVideo> introVideoList = introVideoRepository.findByIntro(intro);
             List<IntroVideoDto> introVideoDtoList = introVideoList.stream()
-                    .map(introVideo -> new IntroVideoDto(introVideo.getVideoUrl(), introVideo.getVideoDesc()))
+                    .map(introVideo -> new IntroVideoDto(introVideo.getVideoDesc(), introVideo.getVideoUrl()))
                     .collect(Collectors.toList());
 
             // IntroResponse 객체 생성
