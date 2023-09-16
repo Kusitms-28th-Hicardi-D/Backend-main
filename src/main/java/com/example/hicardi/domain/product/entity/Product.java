@@ -1,5 +1,6 @@
 package com.example.hicardi.domain.product.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,9 +35,11 @@ public class Product {
     @Column(nullable = false)
     private int price;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductOption> productOptions = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<ProductImage> productImages = new ArrayList<>();
 

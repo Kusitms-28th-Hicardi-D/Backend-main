@@ -93,12 +93,60 @@ public class ProductService {
         // Response 생성
         AllProductResponse allProductResponse = new AllProductResponse(productDtoList);
         BaseResponseDto<AllProductResponse> response = new BaseResponseDto<AllProductResponse>(
-                HttpStatus.CREATED.value(),
+                HttpStatus.OK.value(),
                 true,
-                "Product 생성 API",
+                "카테고리별 Product 조회 API",
                 allProductResponse
         );
 
         return response;
+    }
+
+    public BaseResponseDto<OneProductDto> getProductById(Long id){
+        Product product = productRepository.findProductById(id);
+        if(product != null){
+            OneProductDto oneProductDto = new OneProductDto(product);
+
+            //productOptionRepository에서 productID
+            List<ProductOption> productOptionList = productOptionRepository.findByProductId(product.getId());
+            List<ProductOptionRequest> productOptionDtoList = new ArrayList<>();
+            for (ProductOption productOption : productOptionList) {
+                ProductOptionRequest productOptionRequest = new ProductOptionRequest();
+                productOptionRequest.setName(productOption.getName());
+                productOptionRequest.setContent(productOption.getContent());
+
+                productOptionDtoList.add(productOptionRequest);
+            }
+            oneProductDto.setOptionList(productOptionDtoList);
+
+            //productImageRepository에서 productID
+            List<ProductImage> productImageList = productImageRepository.findByProductId(product.getId());
+            List<ProductImageRequest> productImageDtoList = new ArrayList<>();
+            for (ProductImage productImage : productImageList){
+                ProductImageRequest productImageRequest = new ProductImageRequest();
+                productImageRequest.setImageDesc(productImage.getImageDesc());
+                productImageRequest.setImageUrl(productImage.getImageUrl());
+
+                productImageDtoList.add(productImageRequest);
+            }
+            oneProductDto.setImageList(productImageDtoList);
+
+
+            BaseResponseDto<OneProductDto> response = new BaseResponseDto<OneProductDto>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "아이디별 Product 조회 API 성공",
+                    oneProductDto
+            );
+            return response;
+        }
+        else{
+            BaseResponseDto<OneProductDto> response = new BaseResponseDto<OneProductDto>(
+                    HttpStatus.NOT_FOUND.value(),
+                    false,
+                    "아이디별 Product 조회 API 실패"
+            );
+            return response;
+        }
     }
 }

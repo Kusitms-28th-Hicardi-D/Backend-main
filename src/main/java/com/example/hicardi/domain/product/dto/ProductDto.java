@@ -1,5 +1,6 @@
 package com.example.hicardi.domain.product.dto;
 
+import com.example.hicardi.domain.product.entity.Product;
 import lombok.Getter;
 import lombok.Setter;
 @Getter
