@@ -53,6 +53,13 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    //이름으로 상품 검색 -> 상품명 순으로 정렬해서 전달
+    @GetMapping("/search")
+    public ResponseEntity<BaseResponseDto<AllProductResponse>> getProductByName(@RequestParam(name = "keyword") String keyword) {
+        BaseResponseDto<AllProductResponse> response = productService.getProductByName(keyword);
+        return ResponseEntity.ok(response);
+    }
+
     //이미지 등록
     @PostMapping("/image")
     public BaseResponseDto<?> uploadImage(
