@@ -149,4 +149,44 @@ public class ProductService {
             return response;
         }
     }
+
+    public BaseResponseDto<AllProductResponse> getProductByName(String name){
+        List<Product> productList;
+        productList = productRepository.findByTitleContaining(name);
+        if(productList.isEmpty()){
+            return new BaseResponseDto<AllProductResponse>(
+                    HttpStatus.NOT_FOUND.value(),
+                    false,
+                    "이름별 Product 조회 API 실패: 검색 내용이 없습니다."
+            );
+        }
+        else{
+            List<ProductDto> productDtoList = new ArrayList<>();
+
+            for (Product product : productList) {
+                ProductDto productDto = new ProductDto();
+                productDto.setProductId(product.getId());
+                productDto.setTitle(product.getTitle());
+                productDto.setContent(product.getContent());
+                productDto.setPrice(product.getPrice());
+
+                // 대표 이미지 설정 (이미지 URL을 가져오는 로직이 필요)
+                List<ProductImage> imageUrl = productImageRepository.findByProduct(product);
+                if(imageUrl.size() > 0)
+                    productDto.setImageUrl(imageUrl.get(0).getImageUrl());
+
+                productDtoList.add(productDto);
+            }
+
+            // Response 생성
+            AllProductResponse allProductResponse = new AllProductResponse(productDtoList);
+            BaseResponseDto<AllProductResponse> response = new BaseResponseDto<AllProductResponse>(
+                    HttpStatus.OK.value(),
+                    true,
+                    "카테고리별 Product 조회 API",
+                    allProductResponse
+            );
+            return response;
+        }
+    }
 }
